@@ -1,0 +1,15 @@
+/.vscode
+
+/bin
+/build
+/cocos2d
+/linux-build
+
+# No plans to support these platforms yet
+/proj.android
+/proj.ios_mac/ios
+
+*.a
+*.lib
+*.dll
+*.so
