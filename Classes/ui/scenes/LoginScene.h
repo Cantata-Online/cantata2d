@@ -2,7 +2,7 @@
 #define __UI_SCENES_MAIN_MENU_SCENE_H__
 
 #include "cocos2d.h"
-#include "ui/UIEditBox/UIEditBox.h"
+#include "ui/CocosGUI.h"
 
 /**
  * Login screen
