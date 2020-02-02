@@ -1,6 +1,10 @@
 #include "LoginScene.h"
 
+#define PADDING_BOTTOM 80
+#define ROW_HEIGHT 20
+
 USING_NS_CC;
+using namespace cocos2d::ui;
 
 Scene* LoginScene::createScene()
 {
@@ -17,6 +21,7 @@ bool LoginScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    float labelTextSeparatorX = origin.x + visibleSize.width/2.5;
 
     Label* labelLogo = Label::createWithTTF("Cantata Online", "fonts/Marker Felt.ttf", 24);
     labelLogo->setPosition(Vec2(origin.x + visibleSize.width/2,
@@ -24,46 +29,47 @@ bool LoginScene::init()
     this->addChild(labelLogo, 1);
 
     Label* labelLogin = Label::createWithTTF("Login:", "fonts/arial.ttf", 12);
-    labelLogin->setPosition(Vec2(origin.x + visibleSize.width/4 + labelLogin->getContentSize().width/2,
-                                 origin.y + 120));
+    labelLogin->setAnchorPoint(Point(0.0f, 1.0f));
+    labelLogin->setHorizontalAlignment(TextHAlignment::LEFT);
+    labelLogin->setPosition(Vec2(labelTextSeparatorX - labelLogin->getContentSize().width - 10,
+                                 origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
     this->addChild(labelLogin);
 
 
-    cocos2d::ui::TextField* textLogin = cocos2d::ui::TextField::create("john.doe", "Arial", 12);
-    textLogin->setPosition(Vec2(origin.x + visibleSize.width/2 + textLogin->getContentSize().width/2,
-                                origin.y + 120));
+    TextField* textLogin = TextField::create("john.doe", "Arial", 12);
+    textLogin->setAnchorPoint(Point(0.0f, 1.0f));
+    textLogin->setPosition(Vec2(labelTextSeparatorX,
+                                origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
     textLogin->setColor(Color3B::GRAY);
     textLogin->setMaxLength(30);
     textLogin->setMaxLengthEnabled(true);
-    textLogin->setTextHorizontalAlignment(TextHAlignment::LEFT);
     textLogin->setCursorEnabled(true);
-    textLogin->setTextAreaSize(Size(100, 15));
-    textLogin->setContentSize(Size(100, 15));
     this->addChild(textLogin);
 
     Label* labelPassword = Label::createWithTTF("Password:", "fonts/arial.ttf", 12);
-    labelPassword->setPosition(Vec2(origin.x + visibleSize.width/4 + labelPassword->getContentSize().width/2,
-                                    origin.y + 100));
+    labelPassword->setAnchorPoint(Point(0.0f, 1.0f));
+    labelPassword->setPosition(Vec2(labelTextSeparatorX - labelPassword->getContentSize().width - 10,
+                                    origin.y + PADDING_BOTTOM + (1 * ROW_HEIGHT)));
     this->addChild(labelPassword);
 
 
-    cocos2d::ui::TextField* textPassword = cocos2d::ui::TextField::create("password", "Arial", 12);
-    textPassword->setPosition(Vec2(origin.x + visibleSize.width/2 + textPassword->getContentSize().width/2,
-                                   origin.y + 100));
+    TextField* textPassword = TextField::create("password", "Arial", 12);
+    textPassword->setAnchorPoint(Point(0.0f, 1.0f));
+    textPassword->setPosition(Vec2(labelTextSeparatorX,
+                                   origin.y + PADDING_BOTTOM + (1 * ROW_HEIGHT)));
     textPassword->setCursorEnabled(true);
+    // textPassword->setTextHorizontalAlignment(TextHAlignment::RIGHT);
     textPassword->setPasswordEnabled(true);
     textPassword->setColor(Color3B::GRAY);
     textPassword->setMaxLength(30);
     textPassword->setMaxLengthEnabled(true);
-    textPassword->setTextHorizontalAlignment(TextHAlignment::LEFT);
-    textPassword->setTextAreaSize(Size(100, 15));
-    textPassword->setContentSize(Size(100, 15));
     this->addChild(textPassword);
 
-    cocos2d::ui::Button *btnLogin = cocos2d::ui::Button::create();
+    Button *btnLogin = Button::create();
     btnLogin->setTitleText("Log In");
-    btnLogin->setPosition(Vec2(origin.x + visibleSize.width/2 + btnLogin->getContentSize().width/2,
-                                   origin.y + 80));
+    btnLogin->setAnchorPoint(Point(0.0f, 1.0f));
+    btnLogin->setPosition(Vec2(labelTextSeparatorX,
+                               origin.y + PADDING_BOTTOM + (0 * ROW_HEIGHT)));
 
     this->addChild(btnLogin);
 
