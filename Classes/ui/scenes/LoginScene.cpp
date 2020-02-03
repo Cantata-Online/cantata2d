@@ -3,8 +3,21 @@
 #define PADDING_BOTTOM 80
 #define ROW_HEIGHT 20
 
+#define ACTION_LOGIN 1
+
 USING_NS_CC;
 using namespace cocos2d::ui;
+
+
+void initTextFieldProperties(TextField* textField)
+{
+    textField->setAnchorPoint(Point(0.0f, 1.0f));
+    textField->setCursorEnabled(true);
+    textField->setPasswordEnabled(true);
+    textField->setColor(Color3B::GRAY);
+    textField->setMaxLength(30);
+    textField->setMaxLengthEnabled(true);
+}
 
 Scene* LoginScene::createScene()
 {
@@ -30,21 +43,16 @@ bool LoginScene::init()
 
     Label* labelLogin = Label::createWithTTF("Login:", "fonts/arial.ttf", 12);
     labelLogin->setAnchorPoint(Point(0.0f, 1.0f));
-    labelLogin->setHorizontalAlignment(TextHAlignment::LEFT);
     labelLogin->setPosition(Vec2(labelTextSeparatorX - labelLogin->getContentSize().width - 10,
                                  origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
     this->addChild(labelLogin);
 
 
-    TextField* textLogin = TextField::create("john.doe", "Arial", 12);
-    textLogin->setAnchorPoint(Point(0.0f, 1.0f));
-    textLogin->setPosition(Vec2(labelTextSeparatorX,
+    this->textLogin = TextField::create("john.doe", "Arial", 12);
+    this->textLogin->setPosition(Vec2(labelTextSeparatorX,
                                 origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
-    textLogin->setColor(Color3B::GRAY);
-    textLogin->setMaxLength(30);
-    textLogin->setMaxLengthEnabled(true);
-    textLogin->setCursorEnabled(true);
-    this->addChild(textLogin);
+    initTextFieldProperties(this->textLogin);
+    this->addChild(this->textLogin);
 
     Label* labelPassword = Label::createWithTTF("Password:", "fonts/arial.ttf", 12);
     labelPassword->setAnchorPoint(Point(0.0f, 1.0f));
@@ -54,15 +62,9 @@ bool LoginScene::init()
 
 
     TextField* textPassword = TextField::create("password", "Arial", 12);
-    textPassword->setAnchorPoint(Point(0.0f, 1.0f));
     textPassword->setPosition(Vec2(labelTextSeparatorX,
                                    origin.y + PADDING_BOTTOM + (1 * ROW_HEIGHT)));
-    textPassword->setCursorEnabled(true);
-    // textPassword->setTextHorizontalAlignment(TextHAlignment::RIGHT);
-    textPassword->setPasswordEnabled(true);
-    textPassword->setColor(Color3B::GRAY);
-    textPassword->setMaxLength(30);
-    textPassword->setMaxLengthEnabled(true);
+    initTextFieldProperties(textPassword);
     this->addChild(textPassword);
 
     Button *btnLogin = Button::create();
@@ -70,9 +72,22 @@ bool LoginScene::init()
     btnLogin->setAnchorPoint(Point(0.0f, 1.0f));
     btnLogin->setPosition(Vec2(labelTextSeparatorX,
                                origin.y + PADDING_BOTTOM + (0 * ROW_HEIGHT)));
-
+    btnLogin->setActionTag(ACTION_LOGIN);
+    btnLogin->addTouchEventListener( CC_CALLBACK_2(LoginScene::buttonLoginPressed, this));
     this->addChild(btnLogin);
+
+    this->labelStatus = Label::createWithTTF("", "fonts/arial.ttf", 8);
+    this->labelStatus->setAnchorPoint(Point(0.0f, 1.0f));
+    this->labelStatus->setPosition(Vec2(labelTextSeparatorX,
+                                 origin.y + PADDING_BOTTOM - (1 * ROW_HEIGHT)));
+    this->addChild(this->labelStatus);
 
 
     return true;
+}
+
+void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eventType) {
+    if (cocos2d::ui::Widget::TouchEventType::BEGAN == eventType) {
+        this->labelStatus->setString("Connecting...");
+    }
 }

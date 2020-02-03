@@ -3,6 +3,10 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include <iostream>
+
+USING_NS_CC;
+using namespace cocos2d::ui;
 
 /**
  * Login screen
@@ -15,6 +19,13 @@ public:
     virtual bool init();
     
     CREATE_FUNC(LoginScene);
+
+private:
+    Label* labelStatus;
+    TextField* textLogin;
+    TextField* textPassword;
+
+    void buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eventType);
 };
 
 #endif
