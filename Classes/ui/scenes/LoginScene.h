@@ -1,9 +1,13 @@
 #ifndef __UI_SCENES_MAIN_MENU_SCENE_H__
 #define __UI_SCENES_MAIN_MENU_SCENE_H__
 
-#include "cocos2d.h"
-#include "ui/CocosGUI.h"
+#include <boost/asio.hpp>
 #include <iostream>
+#include <string>
+
+#include "cocos2d.h"
+#include "network/packets/Login.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;

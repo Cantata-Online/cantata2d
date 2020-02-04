@@ -13,7 +13,6 @@ void initTextFieldProperties(TextField* textField)
 {
     textField->setAnchorPoint(Point(0.0f, 1.0f));
     textField->setCursorEnabled(true);
-    textField->setPasswordEnabled(true);
     textField->setColor(Color3B::GRAY);
     textField->setMaxLength(30);
     textField->setMaxLengthEnabled(true);
@@ -47,7 +46,6 @@ bool LoginScene::init()
                                  origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
     this->addChild(labelLogin);
 
-
     this->textLogin = TextField::create("john.doe", "Arial", 12);
     this->textLogin->setPosition(Vec2(labelTextSeparatorX,
                                 origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
@@ -61,11 +59,12 @@ bool LoginScene::init()
     this->addChild(labelPassword);
 
 
-    TextField* textPassword = TextField::create("password", "Arial", 12);
-    textPassword->setPosition(Vec2(labelTextSeparatorX,
+    this->textPassword = TextField::create("password", "Arial", 12);
+    this->textPassword->setPosition(Vec2(labelTextSeparatorX,
                                    origin.y + PADDING_BOTTOM + (1 * ROW_HEIGHT)));
-    initTextFieldProperties(textPassword);
-    this->addChild(textPassword);
+    this->textPassword->setPasswordEnabled(true);
+    initTextFieldProperties(this->textPassword);
+    this->addChild(this->textPassword);
 
     Button *btnLogin = Button::create();
     btnLogin->setTitleText("Log In");
@@ -89,5 +88,21 @@ bool LoginScene::init()
 void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eventType) {
     if (cocos2d::ui::Widget::TouchEventType::BEGAN == eventType) {
         this->labelStatus->setString("Connecting...");
+
+        PacketLogin login;
+        login.setLogin(this->textLogin->getString().c_str());
+        login.setPassword(this->textPassword->getString().c_str());
+
+        char data[sizeof(PacketLogin)];
+        memcpy(data, &login, sizeof(PacketLogin));
+
+        boost::asio::io_service io_service;
+        boost::asio::ip::udp::socket socket(io_service);
+        boost::asio::ip::udp::endpoint remote_endpoint;
+        socket.open(boost::asio::ip::udp::v4());
+        remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 2300);
+        boost::system::error_code err;
+        socket.send_to(boost::asio::buffer(data, sizeof(PacketLogin)), remote_endpoint, 0, err);
+        socket.close();
     }
 }
