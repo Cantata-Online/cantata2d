@@ -6,7 +6,8 @@
 #include <string>
 
 #include "cocos2d.h"
-#include "network/packets/Login.h"
+#include "network/connector/UdpConnector.h"
+#include "network/packets/LoginPacket.h"
 #include "ui/CocosGUI.h"
 
 USING_NS_CC;

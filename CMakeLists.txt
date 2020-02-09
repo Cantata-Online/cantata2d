@@ -59,14 +59,16 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/HelloWorldScene.cpp
-     Classes/network/packets/Login.cpp
+     Classes/network/connector/UdpConnector.cpp
+     Classes/network/packets/AbstractPacket.cpp
+     Classes/network/packets/LoginPacket.cpp
      Classes/ui/scenes/LoginScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/HelloWorldScene.h
-     Classes/network/packets/Login.h
+     Classes/network/connector/UdpConnector.h
+     Classes/network/packets/AbstractPacket.h
+     Classes/network/packets/LoginPacket.h
      Classes/ui/scenes/LoginScene.h
      )
 

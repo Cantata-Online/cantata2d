@@ -86,23 +86,15 @@ bool LoginScene::init()
 }
 
 void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eventType) {
-    if (cocos2d::ui::Widget::TouchEventType::BEGAN == eventType) {
+    if (cocos2d::ui::Widget::TouchEventType::ENDED == eventType) {
         this->labelStatus->setString("Connecting...");
 
-        PacketLogin login;
+        UdpConnector *connector = UdpConnector::getInstance();
+
+        LoginPacket login;
         login.setLogin(this->textLogin->getString().c_str());
         login.setPassword(this->textPassword->getString().c_str());
 
-        char data[sizeof(PacketLogin)];
-        memcpy(data, &login, sizeof(PacketLogin));
-
-        boost::asio::io_service io_service;
-        boost::asio::ip::udp::socket socket(io_service);
-        boost::asio::ip::udp::endpoint remote_endpoint;
-        socket.open(boost::asio::ip::udp::v4());
-        remote_endpoint = boost::asio::ip::udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 2300);
-        boost::system::error_code err;
-        socket.send_to(boost::asio::buffer(data, sizeof(PacketLogin)), remote_endpoint, 0, err);
-        socket.close();
+        connector->send(&login);
     }
 }
