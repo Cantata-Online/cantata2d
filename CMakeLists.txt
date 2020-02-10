@@ -69,6 +69,7 @@ list(APPEND GAME_HEADER
      Classes/network/connector/UdpConnector.h
      Classes/network/packets/AbstractPacket.h
      Classes/network/packets/LoginPacket.h
+     Classes/system/Result.h
      Classes/ui/scenes/LoginScene.h
      )
 
