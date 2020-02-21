@@ -45,7 +45,10 @@ Result<int, string> UdpConnector::send(AbstractPacket *packet)
         return result;
     }
 
-    socket.close();
+    char *buffer = new char[100];
+    memset(buffer, '0', 100);
+    socket.receive(boost::asio::buffer(buffer, 100));
+    // socket.close();
     result.setSuccess(0);
     return result;
 }
