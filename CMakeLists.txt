@@ -30,6 +30,7 @@ set(APP_NAME cantata2d)
 project(${APP_NAME})
 
 find_package( Boost 1.60 COMPONENTS system REQUIRED )
+find_package(Yaml-cpp 0.6)
 
 if(XCODE)
     if(NOT DEFINED CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET)
@@ -60,15 +61,19 @@ endif()
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/network/connector/UdpConnector.cpp
+     Classes/network/connector/Server.cpp
      Classes/network/packets/AbstractPacket.cpp
      Classes/network/packets/LoginPacket.cpp
+     Classes/network/packets/LoginResponsePacket.cpp
      Classes/ui/scenes/LoginScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/network/connector/UdpConnector.h
+     Classes/network/connector/Server.h
      Classes/network/packets/AbstractPacket.h
      Classes/network/packets/LoginPacket.h
+     Classes/network/packets/LoginResponsePacket.h
      Classes/system/Result.h
      Classes/ui/scenes/LoginScene.h
      )
@@ -138,7 +143,7 @@ else()
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
 endif()
 
-target_link_libraries(${APP_NAME} cocos2d ${Boost_LIBRARIES})
+target_link_libraries(${APP_NAME} cocos2d ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 target_include_directories(${APP_NAME}
         PRIVATE Classes
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/

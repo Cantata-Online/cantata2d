@@ -30,6 +30,8 @@ bool LoginScene::init()
         return false;
     }
 
+    this->initServerList();
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -90,11 +92,36 @@ void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::
         this->labelStatus->setString("Connecting...");
 
         UdpConnector *connector = UdpConnector::getInstance();
+        Result<bool, string> result = connector->connect(this->servers[0]);
+        if (!result.isSucceeded)
+        {
+            this->labelStatus->setString("Failed to connect to server.");
+            return;
+        }
+        this->labelStatus->setString("Sending the log in request...");
 
         LoginPacket login;
         login.setLogin(this->textLogin->getString().c_str());
         login.setPassword(this->textPassword->getString().c_str());
 
-        connector->send(&login);
+        result = connector->send(&login);
+        this->labelStatus->setString("Done.");
+    }
+}
+
+void LoginScene::initServerList()
+{
+    YAML::Node servers = YAML::LoadFile("Resources/servers.yaml")["servers"];
+    for (YAML::const_iterator it = servers.begin(); it != servers.end(); ++it)
+    {
+        YAML::Node serverData = *it;
+        Server server;
+        server.cerfificatePath = serverData["ssl_certificate"].as<std::string>();
+        server.host = serverData["host"].as<std::string>();
+        server.name = serverData["name"].as<std::string>();
+        server.port = serverData["port"].as<int>();
+
+        this->servers.push_back(server);
+
     }
 }

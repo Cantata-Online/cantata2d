@@ -13,3 +13,12 @@
 *.lib
 *.dll
 *.so
+
+# CMake artifacts
+/CMakeCache.txt
+/CMakeFiles
+/Makefile
+/cmake_install.cmake
+/engine
+
+/Resources/servers.yaml

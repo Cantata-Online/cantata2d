@@ -7,7 +7,7 @@
 
 #define TEXT_MAX_LEN 30
 
-struct Payload {
+struct LoginPacketPayload {
     unsigned short int header;
     char login[TEXT_MAX_LEN + 1];
     char password[TEXT_MAX_LEN + 1];
@@ -16,7 +16,7 @@ struct Payload {
 class LoginPacket: public AbstractPacket
 {
     public:
-        Payload payload;
+        LoginPacketPayload payload;
 
         LoginPacket();
         char* toChar();

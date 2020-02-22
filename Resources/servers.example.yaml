@@ -1,0 +1,5 @@
+servers:
+  - name: Local Dev Server
+    host: localhost
+    port: 2300
+    ssl_certificate: ssl/dev.crt
