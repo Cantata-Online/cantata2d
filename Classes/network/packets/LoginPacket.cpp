@@ -1,7 +1,5 @@
 #include "LoginPacket.h"
 
-#include <iostream>
-
 #define PACKET_CODE_LOGIN 0x0010
 
 LoginPacket::LoginPacket()

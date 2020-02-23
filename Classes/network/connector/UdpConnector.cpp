@@ -51,22 +51,17 @@ Result<bool, string> UdpConnector::connect(Server server)
     return result;
 }
 
-Result<bool, string> UdpConnector::send(AbstractPacket *packet)
+Result<int, string> UdpConnector::doSend(char* input, int inputSize, char* output, int outputSize)
 {
-    Result<bool, string> result;
-    char* data = packet->toChar();
-
-
+    Result<int, string> result;
     boost::system::error_code err;
-    this->udpSocket->send_to(boost::asio::buffer(data, packet->getSize()), this->remoteEndpoint, 0, err);
+    this->udpSocket->send_to(boost::asio::buffer(input, inputSize), this->remoteEndpoint, 0, err);
     if (err.value() != 0) {
         result.setError(err.message());
         return result;
     }
 
-    char *buffer = new char[100];
-    memset(buffer, '0', 100);
-    this->udpSocket->receive(boost::asio::buffer(buffer, 100));
-    result.setSuccess(true);
+    int receivedBytes = this->udpSocket->receive(boost::asio::buffer(output, outputSize));
+    result.setSuccess(receivedBytes);
     return result;
 }

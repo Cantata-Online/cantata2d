@@ -20,12 +20,39 @@ class UdpConnector
         ~UdpConnector();
 
         Result<bool, string> connect(Server server);
-        Result<bool, string> send(AbstractPacket *packet);
+
+        template<typename I, typename O>
+        Result<O, string> send(I requestPacket)
+        {
+            Result<O, string> result;
+            int inputSize = sizeof(I);
+            int outputSize = sizeof(O);
+
+            char *inputData = reinterpret_cast<char*>(&requestPacket.payload);
+            char outputData[outputSize];
+            memset(outputData, '\0', outputSize);
+            Result<int, string> sendResult = this->doSend(inputData, inputSize, outputData, outputSize);
+
+            if (sendResult.isSucceeded)
+            {
+                O outPacket;
+                memcpy(&outPacket.payload, outputData, outputSize);
+                result.setSuccess(outPacket);
+            }
+            else
+            {
+                result.setError(sendResult.error);
+            }
+
+            return result;
+        }
 
         static UdpConnector* getInstance();
     private:
         udp::socket *udpSocket;
         udp::endpoint remoteEndpoint;
+
+        Result<int, string> doSend(char* input, int inputSize, char* output, int outputSize);
 };
 
 #endif

@@ -104,8 +104,18 @@ void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::
         login.setLogin(this->textLogin->getString().c_str());
         login.setPassword(this->textPassword->getString().c_str());
 
-        result = connector->send(&login);
-        this->labelStatus->setString("Done.");
+        Result<LoginResponsePacket, string> sendResult = connector->send<LoginPacket, LoginResponsePacket>(login);
+        if (sendResult.isSucceeded)
+        {
+            LoginResponsePacket response = sendResult.success;
+            string labelStatusValue = response.payload.status ? "Login succeeded" : "Login failed.";
+            this->labelStatus->setString(labelStatusValue);
+        }
+        else
+        {
+            this->labelStatus->setString(string("Error: ") + sendResult.error);
+        }
+
     }
 }
 
