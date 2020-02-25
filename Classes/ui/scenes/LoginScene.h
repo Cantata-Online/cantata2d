@@ -26,7 +26,7 @@ using namespace cocos2d::ui;
 class LoginScene : public cocos2d::Scene
 {
 public:
-    static cocos2d::Scene* createScene();
+    static LoginScene* createScene();
 
     virtual bool init();
     

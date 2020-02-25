@@ -18,7 +18,7 @@ void initTextFieldProperties(TextField* textField)
     textField->setMaxLengthEnabled(true);
 }
 
-Scene* LoginScene::createScene()
+LoginScene* LoginScene::createScene()
 {
     return LoginScene::create();
 }
