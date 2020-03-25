@@ -8,7 +8,9 @@
 #include <yaml-cpp/yaml.h>
 
 #include "cocos2d.h"
+#include "ui/fonts.h"
 #include "ui/CocosGUI.h"
+#include "ui/scenes/char_select/CharSelectScene.h"
 
 #include "network/connector/Server.h"
 #include "network/connector/UdpConnector.h"

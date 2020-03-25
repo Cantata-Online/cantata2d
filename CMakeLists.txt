@@ -66,6 +66,7 @@ list(APPEND GAME_SOURCE
      Classes/network/packets/LoginPacket.cpp
      Classes/network/packets/LoginResponsePacket.cpp
      Classes/ui/scenes/LoginScene.cpp
+     Classes/ui/scenes/char_select/CharSelectScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -75,7 +76,9 @@ list(APPEND GAME_HEADER
      Classes/network/packets/LoginPacket.h
      Classes/network/packets/LoginResponsePacket.h
      Classes/system/Result.h
+     Classes/ui/fonts.h
      Classes/ui/scenes/LoginScene.h
+     Classes/ui/scenes/char_select/CharSelectScene.h
      )
 
 if(ANDROID)

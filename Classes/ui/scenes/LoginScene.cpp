@@ -37,12 +37,12 @@ bool LoginScene::init()
 
     float labelTextSeparatorX = origin.x + visibleSize.width/2.5;
 
-    Label* labelLogo = Label::createWithTTF("Cantata Online", "fonts/Marker Felt.ttf", 24);
+    Label* labelLogo = Label::createWithTTF("Cantata Online", UI_FONT_TRADITIO, 24);
     labelLogo->setPosition(Vec2(origin.x + visibleSize.width/2,
                                 origin.y + visibleSize.height - labelLogo->getContentSize().height));
     this->addChild(labelLogo, 1);
 
-    Label* labelLogin = Label::createWithTTF("Login:", "fonts/arial.ttf", 12);
+    Label* labelLogin = Label::createWithTTF("Login:", UI_FONT_ARIAL, 12);
     labelLogin->setAnchorPoint(Point(0.0f, 1.0f));
     labelLogin->setPosition(Vec2(labelTextSeparatorX - labelLogin->getContentSize().width - 10,
                                  origin.y + PADDING_BOTTOM + (2 * ROW_HEIGHT)));
@@ -108,8 +108,15 @@ void LoginScene::buttonLoginPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::
         if (sendResult.isSucceeded)
         {
             LoginResponsePacket response = sendResult.success;
-            string labelStatusValue = response.payload.status ? "Login succeeded" : "Login failed.";
+            bool isSucceeded = response.payload.status;
+            string labelStatusValue = isSucceeded ? "Login succeeded" : "Login failed.";
             this->labelStatus->setString(labelStatusValue);
+
+            if (isSucceeded)
+            {
+                CharSelectScene* charSelectScene = CharSelectScene::createScene();
+                Director::getInstance()->replaceScene(charSelectScene);
+            }
         }
         else
         {
